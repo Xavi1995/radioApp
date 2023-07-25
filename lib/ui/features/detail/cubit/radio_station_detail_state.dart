@@ -13,12 +13,22 @@ enum DetailPageStatus {
 }
 
 class RadioStationDetailState extends Equatable {
-  const RadioStationDetailState({this.status = DetailPageStatus.initial});
+  const RadioStationDetailState(
+      {this.status = DetailPageStatus.initial,
+      this.isPlaying = false,
+      this.errorMessage = ''});
   final DetailPageStatus status;
-  @override
-  List<Object?> get props => [status];
+  final bool isPlaying;
+  final String errorMessage;
 
-  RadioStationDetailState copyWith({DetailPageStatus? status}) {
-    return RadioStationDetailState(status: status ?? this.status);
+  @override
+  List<Object?> get props => [status, isPlaying, errorMessage];
+
+  RadioStationDetailState copyWith(
+      {DetailPageStatus? status, bool? isPlaying, String? errorMessage}) {
+    return RadioStationDetailState(
+        status: status ?? this.status,
+        isPlaying: isPlaying ?? this.isPlaying,
+        errorMessage: errorMessage ?? this.errorMessage);
   }
 }

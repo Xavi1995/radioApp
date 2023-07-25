@@ -16,7 +16,9 @@ class HomeCubit extends Cubit<HomeState> {
     final response = await remote.getRadioStations();
 
     if (response.isNotEmpty) {
-      emit(state.copyWith(status: HomeStatus.success, radioList: response));
+      emit(state.copyWith(
+          status: HomeStatus.success,
+          radioList: cleanEmptyRadioStations(response)));
     } else {
       emit(
         state.copyWith(status: HomeStatus.error),
@@ -24,12 +26,29 @@ class HomeCubit extends Cubit<HomeState> {
     }
   }
 
+  List<RadioStationEntity> cleanEmptyRadioStations(
+      List<RadioStationEntity> radioStations) {
+    List<RadioStationEntity> cleanedRadioList = [];
+    for (RadioStationEntity radioStation in radioStations) {
+      if (radioStation.name != '' &&
+          radioStation.favicon != '' &&
+          radioStation.tags != '') {
+        cleanedRadioList.add(radioStation);
+      }
+    }
+
+    return cleanedRadioList;
+  }
+
   void onTapRadio(RadioStationEntity radioStation, BuildContext context) {
     Navigator.pushNamed(
       context,
       RouteConstants.detailRadio,
-      arguments:
-          RadioStationEntity(url: radioStation.url, name: radioStation.name),
+      arguments: RadioStationEntity(
+          url: radioStation.url,
+          name: radioStation.name,
+          favicon: radioStation.favicon,
+          tags: radioStation.tags),
     );
   }
 }

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:radio_app/core/constants/routing_constants.dart';
 import 'package:radio_app/ui/features/landing/cubit/landing_cubit.dart';
-import 'package:radio_app/ui/widgets/loader.dart';
+import 'package:radio_app/ui/features/landing/widgets/landing_layout.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -13,8 +12,7 @@ class LandingPage extends StatelessWidget {
       bloc: context.read<LandingCubit>()..init(),
       listener: (context, state) {
         if (state.status.isSucces) {
-          Navigator.pushNamedAndRemoveUntil(
-              context, RouteConstants.home, (route) => false);
+          context.read<LandingCubit>().goToHomePage(context);
         }
       },
       builder: (context, state) {
@@ -22,7 +20,7 @@ class LandingPage extends StatelessWidget {
           case LandingStatus.loading:
           case LandingStatus.initial:
           case LandingStatus.success:
-            return const CustomLoader();
+            return const LandingLayout();
         }
       },
     );

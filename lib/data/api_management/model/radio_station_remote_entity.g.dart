@@ -11,4 +11,6 @@ RadioStationRemoteEntity _$RadioStationRemoteEntityFromJson(
     RadioStationRemoteEntity(
       url: json['url'] as String?,
       name: json['name'] as String?,
+      favicon: json['favicon'] as String?,
+      tags: json['tags'] as String?,
     );

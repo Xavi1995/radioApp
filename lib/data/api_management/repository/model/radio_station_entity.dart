@@ -4,8 +4,14 @@ import 'package:radio_app/data/api_management/model/radio_station_remote_entity.
 class RadioStationEntity extends Equatable {
   final String url;
   final String name;
+  final String favicon;
+  final String tags;
 
-  const RadioStationEntity({required this.url, required this.name});
+  const RadioStationEntity(
+      {required this.url,
+      required this.name,
+      required this.favicon,
+      required this.tags});
 
   @override
   List<Object?> get props => [url, name];
@@ -13,6 +19,16 @@ class RadioStationEntity extends Equatable {
 
 extension RadioStationEntityExtensions on RadioStationRemoteEntity {
   RadioStationEntity toEntity() {
-    return RadioStationEntity(url: url ?? '', name: name ?? '');
+    String? cleanedName;
+
+    if (name != null) {
+      cleanedName = name!.replaceAll(' ', '');
+    }
+
+    return RadioStationEntity(
+        url: url ?? '',
+        name: cleanedName ?? '',
+        favicon: favicon ?? '',
+        tags: tags ?? '');
   }
 }

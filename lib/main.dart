@@ -4,7 +4,7 @@ import 'package:radio_app/core/constants/routing_constants.dart';
 import 'package:radio_app/core/routing/router.dart' as router;
 import 'package:radio_app/di/app_di.dart' as app_di;
 import 'package:radio_app/ui/bloc_providers_store.dart';
-import 'package:radio_app/ui/widgets/loader.dart';
+import 'package:radio_app/ui/styles/themes.dart';
 
 import 'core/utils/system_overlay.dart';
 
@@ -21,11 +21,16 @@ void main() async {
 
 void run() {
   runApp(BlocProviderStore.init(
-    child: const Material(
-      child: SizedBox(
+    child: MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: SizedBox(
         width: double.infinity,
         height: double.infinity,
-        child: RadioStationApp(),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return const RadioStationApp();
+          },
+        ),
       ),
     ),
   ));
@@ -42,13 +47,14 @@ class RadioStationApp extends StatelessWidget {
           future: GetIt.I.allReady(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
-              return const MaterialApp(
+              return MaterialApp(
                 debugShowCheckedModeBanner: false,
                 initialRoute: RouteConstants.landing,
                 onGenerateRoute: router.generateRoute,
+                theme: appThemesData[AppTheme.light],
               );
             } else {
-              return const CustomLoader();
+              return const SizedBox();
             }
           },
         ),
